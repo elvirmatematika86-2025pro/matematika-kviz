@@ -1,0 +1,93 @@
+let pitanja = [];
+let tacniOdgovori = [];
+let vrijeme = 40 * 60; // 40 minuta
+let timerInterval;
+
+function pokreniKviz(e) {
+  e.preventDefault();
+
+  document.getElementById("prijava").style.display = "none";
+  document.getElementById("kviz").style.display = "block";
+
+  generisiPitanja();
+  startTimer();
+}
+
+function generisiPitanja() {
+  const container = document.getElementById("pitanja");
+
+  for (let i = 1; i <= 50; i++) {
+    let broj1 = Math.floor(Math.random() * 20) + 1;
+    let broj2 = Math.floor(Math.random() * 20) + 1;
+    let tacan = broj1 + broj2;
+    let pogresan1 = tacan + Math.floor(Math.random() * 5) + 1;
+    let pogresan2 = tacan - Math.floor(Math.random() * 5) - 1;
+
+    let redoslijed = [tacan, pogresan1, pogresan2].sort(() => Math.random() - 0.5);
+    tacniOdgovori.push(tacan);
+
+    const pitanjeHTML = `
+      <div class="pitanje">
+        <p>${i}. Koliko iznosi ${broj1} + ${broj2}?</p>
+        ${redoslijed.map(
+          (br, j) =>
+            `<label><input type="radio" name="q${i}" value="${br}"> ${br}</label>`
+        ).join("")}
+      </div>`;
+    container.innerHTML += pitanjeHTML;
+  }
+}
+
+function startTimer() {
+  const timerEl = document.getElementById("timer");
+  timerInterval = setInterval(() => {
+    let min = Math.floor(vrijeme / 60);
+    let sec = vrijeme % 60;
+    sec = sec < 10 ? "0" + sec : sec;
+    timerEl.textContent = `⏳ ${min}:${sec}`;
+
+    if (vrijeme <= 0) {
+      clearInterval(timerInterval);
+      zavrsiKviz();
+    }
+    vrijeme--;
+  }, 1000);
+}
+
+function zavrsiKviz() {
+  clearInterval(timerInterval);
+  document.getElementById("kviz").style.display = "none";
+  document.getElementById("rezultat").style.display = "block";
+
+  const ime1 = document.getElementById("ucenik1").value.trim();
+  const ime2 = document.getElementById("ucenik2").value.trim();
+  const razred = document.getElementById("razred").value.trim();
+
+  let bodovi = 0;
+  for (let i = 1; i <= 50; i++) {
+    const odgovor = document.querySelector(`input[name="q${i}"]:checked`);
+    if (odgovor && parseInt(odgovor.value) === tacniOdgovori[i - 1]) {
+      bodovi++;
+    }
+  }
+
+  const postotak = (bodovi / 50) * 100;
+  let ocjena =
+    postotak >= 90 ? 5 :
+    postotak >= 75 ? 4 :
+    postotak >= 60 ? 3 :
+    postotak >= 45 ? 2 : 1;
+
+  let poruka =
+    ocjena === 5 ? "🏆 Izvanredno! Zlatna diploma!" :
+    ocjena === 4 ? "🥈 Odlično, srebrna pohvala!" :
+    ocjena === 3 ? "👏 Dobar rezultat, bravo!" :
+    ocjena === 2 ? "💡 Potrebno malo više vježbe." :
+    "📘 Ne odustaj! Učiš kroz greške.";
+
+  document.getElementById("ekipa-info").innerHTML = `
+    Ekipa: <b>${ime1}</b> i <b>${ime2}</b> (razred ${razred})`;
+  document.getElementById("bodovi").innerHTML = `Osvojeni bodovi: <b>${bodovi}/50</b>`;
+  document.getElementById("ocjena").innerHTML = `Ocjena: <b>${ocjena}</b>`;
+  document.getElementById("poruka").innerHTML = poruka;
+}

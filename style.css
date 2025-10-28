@@ -1,0 +1,118 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap');
+
+body {
+  font-family: "Poppins", sans-serif;
+  background: linear-gradient(135deg, #f0f8ff, #cce6ff);
+  margin: 0;
+  color: #002244;
+  scroll-behavior: smooth;
+}
+
+header {
+  text-align: center;
+  padding: 2rem 1rem;
+  background: linear-gradient(90deg, #007bff, #00c6ff);
+  color: white;
+  box-shadow: 0 3px 12px rgba(0,0,0,0.2);
+}
+
+h1 {
+  margin: 0;
+  font-size: 2.2rem;
+}
+
+main {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 1rem;
+  background: rgba(255,255,255,0.9);
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.1);
+}
+
+h2 {
+  color: #0056b3;
+  text-align: center;
+  margin-bottom: 1.2rem;
+}
+
+input {
+  display: block;
+  width: 90%;
+  margin: 0.6rem auto;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #007bff;
+  font-size: 1rem;
+}
+
+button {
+  display: block;
+  margin: 1.5rem auto;
+  padding: 10px 25px;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: 0.3s;
+}
+
+button:hover {
+  background: #005bb5;
+}
+
+.pitanje {
+  margin-bottom: 1rem;
+  padding: 0.8rem;
+  border-bottom: 1px solid #d0e6ff;
+}
+
+.pitanje p {
+  font-weight: 600;
+}
+
+label {
+  display: block;
+  margin-left: 1rem;
+  margin-top: 4px;
+}
+
+.timer-container {
+  text-align: right;
+  font-size: 1.2rem;
+  color: #ff3c00;
+  margin-right: 1rem;
+}
+
+#rezultat {
+  text-align: center;
+  color: #003366;
+}
+
+#rezultat p {
+  font-size: 1.1rem;
+}
+
+footer {
+  text-align: center;
+  padding: 1.5rem;
+  background: linear-gradient(90deg, #007bff, #00c6ff);
+  color: white;
+  margin-top: 2rem;
+  border-radius: 0 0 10px 10px;
+}
+#rezultat button {
+  background: linear-gradient(90deg, #ffce00, #ffd84f);
+  color: #002244;
+  font-weight: 600;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+#rezultat button:hover {
+  background: linear-gradient(90deg, #ffd84f, #ffce00);
+}

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="bs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Matematika — Kviz OŠ Prokosovići</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<body>
+  <header>
+    <h1>🧮 Kviz iz Matematike</h1>
+    <p>OŠ Prokosovići | Sekcija: Mladi matematičari | Voditelj: prof. Elvir Čajić</p>
+  </header>
+
+  <main>
+    <section id="prijava">
+      <h2>Prijava ekipe</h2>
+      <form id="forma-prijava" onsubmit="pokreniKviz(event)">
+        <input type="text" id="ucenik1" placeholder="Ime i prezime učenika 1" required>
+        <input type="text" id="ucenik2" placeholder="Ime i prezime učenika 2" required>
+        <input type="text" id="razred" placeholder="Razred (1-9)" required pattern="[1-9]">
+        <button type="submit">Započni kviz</button>
+      </form>
+    </section>
+
+    <section id="kviz" style="display:none;">
+      <div class="timer-container">
+        <p id="timer">⏳ 40:00</p>
+      </div>
+      <form id="forma-kviz">
+        <div id="pitanja"></div>
+        <button type="button" onclick="zavrsiKviz()">✅ Završi kviz</button>
+      </form>
+    </section>
+
+    <section id="rezultat" style="display:none;">
+      <h2>Rezultati ekipe</h2>
+      <p id="ekipa-info"></p>
+      <p id="bodovi"></p>
+      <p id="ocjena"></p>
+      <p id="poruka"></p>
+      <button onclick="window.location.reload()">🔄 Novi pokušaj</button>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 OŠ Prokosovići | Sekcija "Mladi matematičari" | prof. Elvir Čajić</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
