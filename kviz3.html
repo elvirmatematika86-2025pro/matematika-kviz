@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="bs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🏆 Zlatni kviz — OŠ Prokosovići</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+
+</head>
+<body>
+  <header>
+    <h1>🏆 Zlatni nivo kviza</h1>
+    <p>50 pitanja • Vrijeme: 15 minuta</p>
+  </header>
+
+  <main>
+    <section id="kviz">
+      <div id="timer">⏳ 15:00</div>
+      <div id="pitanja"></div>
+      <button id="zavrsiBtn">Završi kviz</button>
+    </section>
+
+    <section id="rezultat" class="hidden">
+      <h2>Rezultat kviza</h2>
+      <p id="rezime"></p>
+      <p id="ocjena"></p>
+      <h3>Tačni odgovori:</h3>
+      <div id="tacni"></div>
+      <button id="diplomaBtn">📜 Preuzmi diplomu</button>
+      <button onclick="window.location.href='index.html'">⬅ Nazad</button>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 OŠ Prokosovići — Sekcija Mladi matematičari</p>
+  </footer>
+
+  <script src="script.js"></script>
+  <script>initKviz("zlato");</script>
+</body>
+</html>

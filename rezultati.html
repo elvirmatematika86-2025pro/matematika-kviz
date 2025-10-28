@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="bs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>📊 Pregled rezultata — OŠ Prokosovići</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <h1>📊 Analiza rezultata kvizova</h1>
+  <p>Voditelj sekcije: prof. Elvir Čajić</p>
+</header>
+
+<main>
+  <button id="exportBtn">💾 Preuzmi CSV fajl</button>
+  <p id="analiza"></p>
+  <table id="tabela-rezultata" class="tabela"></table>
+  <button onclick="window.location.href='index.html'">⬅ Nazad</button>
+</main>
+<button id="obrisiSve" style="background:#d32f2f; color:white; display:none;">
+  🗑 Obriši sve rezultate
+</button>
+
+<footer>
+  <p>&copy; 2025 OŠ Prokosovići — Sekcija Mladi matematičari</p>
+</footer>
+
+<script src="script.js"></script>
+<script>prikaziSveRezultate();</script>
+</body>
+</html>

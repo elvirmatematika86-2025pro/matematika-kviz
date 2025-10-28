@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="bs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kviz — Mladi matematičari OŠ Prokosovići</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>🧮 Mladi matematičari — OŠ Prokosovići</h1>
+    <p>Voditelj sekcije: prof. Elvir Čajić</p>
+  </header>
+
+  <main>
+    <section id="prijava">
+      <h2>Prijava ekipe</h2>
+
+      <div class="ekipa">
+        <h3>Učenik 1</h3>
+        <input type="text" id="ime1" placeholder="Ime" required>
+        <input type="text" id="prezime1" placeholder="Prezime" required>
+      </div>
+
+      <div class="ekipa">
+        <h3>Učenik 2</h3>
+        <input type="text" id="ime2" placeholder="Ime" required>
+        <input type="text" id="prezime2" placeholder="Prezime" required>
+      </div>
+
+      <div class="razred">
+        <label for="razred">Razred:</label>
+        <select id="razred">
+          <option value="">Odaberi razred</option>
+          <option value="6">VI</option>
+          <option value="7">VII</option>
+          <option value="8">VIII</option>
+          <option value="9">IX</option>
+        </select>
+      </div>
+
+      <button id="spremiBtn">Spremi ekipu</button>
+    </section>
+
+    <section id="nivo-kviz" class="hidden">
+      <h2>Izaberi nivo kviza</h2>
+      <p class="opis">
+        Svaki kviz ima 50 pitanja i 15 minuta vremena.  
+        Pokažite znanje i osvojite svoju diplomu!
+      </p>
+
+      <div class="nivo-container">
+        <a href="kviz1.html" class="btn bronze">🥉 Bronzani nivo<br><small>Osnovna aritmetika</small></a>
+        <a href="kviz2.html" class="btn silver">🥈 Srebrni nivo<br><small>Izrazi i jednadžbe</small></a>
+        <a href="kviz3.html" class="btn gold">🏆 Zlatni nivo<br><small>Geometrija i logika</small></a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 OŠ Prokosovići — Sekcija “Mladi matematičari” | prof. Elvir Čajić</p>
+  </footer>
+<script>
+  // Tajni pristup za nastavnika – pritisni ALT + R
+  document.addEventListener("keydown", (e) => {
+    if (e.altKey && e.key.toLowerCase() === "r") {
+      window.location.href = "rezultati.html";
+    }
+  });
+</script>
+
+  <script>
+    const ime1 = document.getElementById('ime1');
+    const prezime1 = document.getElementById('prezime1');
+    const ime2 = document.getElementById('ime2');
+    const prezime2 = document.getElementById('prezime2');
+    const razred = document.getElementById('razred');
+    const spremiBtn = document.getElementById('spremiBtn');
+
+    spremiBtn.addEventListener('click', () => {
+      if (!ime1.value || !prezime1.value || !ime2.value || !prezime2.value || !razred.value) {
+        alert('Molimo unesite sva polja!');
+        return;
+      }
+
+      const ekipa = {
+        ucenik1: `${ime1.value} ${prezime1.value}`,
+        ucenik2: `${ime2.value} ${prezime2.value}`,
+        razred: razred.value
+      };
+
+      localStorage.setItem('ekipa', JSON.stringify(ekipa));
+      document.getElementById('prijava').classList.add('hidden');
+      document.getElementById('nivo-kviz').classList.remove('hidden');
+    });
+  </script>
+  <p style="text-align:center; font-size:12px; color:#b0b0b0;">
+  <a href="rezultati.html" style="color:#b0b0b0; text-decoration:none;">.</a>
+</p>
+
+</body>
+</html>
