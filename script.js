@@ -1,4 +1,4 @@
-onst { jsPDF } = window.jspdf;
+const { jsPDF } = window.jspdf;
 let tacniOdgovori = [];
 let odgovoriKorisnika = [];
 let ime1, ime2, razred;
@@ -349,3 +349,4 @@ document.addEventListener("DOMContentLoaded", () => {
     initKviz(nivo);
   });
 });
+
