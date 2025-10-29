@@ -17,32 +17,40 @@
     <!-- PRIJAVA EKIPE -->
     <section id="prijava">
       <h2>Prijava ekipe</h2>
-      <p style="text-align:center; color:#444;">Učestvuju učenici od 5. do 9. razreda</p>
+      <p style="text-align:center; color:#333;">Ekipe čine dva učenika (razredi 5–9 mogu biti različiti)</p>
 
       <div class="ekipa-flex">
+        <!-- UČENIK 1 -->
         <div class="ucenik-blok">
           <h3>Učenik 1</h3>
           <input type="text" id="ime1" placeholder="Ime" required>
           <input type="text" id="prezime1" placeholder="Prezime" required>
+          <label for="razred1">Razred:</label>
+          <select id="razred1" required>
+            <option value="">Odaberi razred</option>
+            <option>5</option>
+            <option>6</option>
+            <option>7</option>
+            <option>8</option>
+            <option>9</option>
+          </select>
         </div>
 
+        <!-- UČENIK 2 -->
         <div class="ucenik-blok">
           <h3>Učenik 2</h3>
           <input type="text" id="ime2" placeholder="Ime" required>
           <input type="text" id="prezime2" placeholder="Prezime" required>
+          <label for="razred2">Razred:</label>
+          <select id="razred2" required>
+            <option value="">Odaberi razred</option>
+            <option>5</option>
+            <option>6</option>
+            <option>7</option>
+            <option>8</option>
+            <option>9</option>
+          </select>
         </div>
-      </div>
-
-      <div class="razred-blok">
-        <label for="razred">Razred:</label>
-        <select id="razred" required>
-          <option value="">Odaberi razred</option>
-          <option>5</option>
-          <option>6</option>
-          <option>7</option>
-          <option>8</option>
-          <option>9</option>
-        </select>
       </div>
 
       <button id="startBtn">Započni kviz</button>
@@ -51,10 +59,10 @@
         <a href="#" id="nastavnikPrijava">👨‍🏫 Prijava nastavnika</a>
       </div>
 
+      <!-- SKRIVENA FORMA ZA NASTAVNIKA -->
       <div id="nastavnikForma" class="hidden">
         <h3>Prijava nastavnika</h3>
-        <input type="text" id="nastavnikIme" placeholder="Korisničko ime">
-        <input type="password" id="nastavnikLozinka" placeholder="Lozinka">
+        <input type="password" id="nastavnikLozinka" placeholder="Unesi pristupni kod">
         <button id="nastavnikBtn">Prijavi se</button>
       </div>
     </section>
@@ -83,12 +91,36 @@
   <script src="script.js"></script>
 
   <script>
-    // --- Tajni pristup rezultatima ---
+    // --- Tajna kombinacija za prikaz rezultata ---
     document.addEventListener("keydown", (e) => {
       if (e.altKey && e.key.toLowerCase() === "r") {
         window.location.href = "rezultati.html";
       }
     });
+
+    // --- Prijava nastavnika (tajni kod) ---
+    const link = document.getElementById("nastavnikPrijava");
+    const forma = document.getElementById("nastavnikForma");
+    const nastavnikBtn = document.getElementById("nastavnikBtn");
+
+    if (link) {
+      link.addEventListener("click", (e) => {
+        e.preventDefault();
+        forma.classList.toggle("hidden");
+      });
+    }
+
+    if (nastavnikBtn) {
+      nastavnikBtn.addEventListener("click", () => {
+        const pass = document.getElementById("nastavnikLozinka").value.trim();
+        if (pass === "elvircajic2025") {
+          alert("Dobrodošli, profesore!");
+          window.location.href = "rezultati.html";
+        } else {
+          alert("Pogrešan pristupni kod!");
+        }
+      });
+    }
   </script>
 </body>
 </html>
