@@ -1,32 +1,30 @@
 <!DOCTYPE html>
-<html lang="bs">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>📊 Pregled rezultata — OŠ Prokosovići</title>
+<title>Pregled rezultata — OS Prokosovici</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <header>
-  <h1>📊 Analiza rezultata kvizova</h1>
-  <p>Voditelj sekcije: prof. Elvir Čajić</p>
+  <h1>Analiza rezultata kvizova</h1>
+  <p>Voditelj sekcije: prof. Elvir Cajic</p>
 </header>
 
 <main>
-  <button id="exportBtn">💾 Preuzmi CSV fajl</button>
+  <button id="exportBtn">💾 Preuzmi CSV</button>
   <p id="analiza"></p>
   <table id="tabela-rezultata" class="tabela"></table>
   <button onclick="window.location.href='index.html'">⬅ Nazad</button>
 </main>
-<button id="obrisiSve" style="background:#d32f2f; color:white; display:none;">
-  🗑 Obriši sve rezultate
-</button>
+<button id="obrisiSve" style="background:#d32f2f; color:white; display:none;">🗑 Obriši sve rezultate</button>
 
 <footer>
-  <p>&copy; 2025 OŠ Prokosovići — Sekcija Mladi matematičari</p>
+  <p>&copy; 2025 OS Prokosovici — Sekcija Mladi matematicari</p>
 </footer>
 
 <script src="script.js"></script>
-<script>prikaziSveRezultate();</script>
+<script>document.addEventListener("DOMContentLoaded", prikaziSveRezultate);</script>
 </body>
 </html>
