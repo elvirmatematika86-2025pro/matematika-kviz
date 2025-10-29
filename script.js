@@ -172,53 +172,63 @@ function prikaziTacneOdgovore() {
 // ------------------ Diploma ------------------
 function generisiDiplomu() {
   const { jsPDF } = window.jspdf;
-  const doc = new jsPDF({ orientation: "landscape" });
+  const doc = new jsPDF({ orientation: "landscape", unit: "mm", format: "a4" });
 
+  // Učitaj zadnji rezultat
   let data = Object.values(localStorage).slice(-1)[0];
   data = JSON.parse(data);
 
-  // Odredi boju pozadine na osnovu ocjene
+  // Boje diploma prema ocjeni
   let boja = "#FFD700"; // zlato
   if (data.ocjena === 4) boja = "#C0C0C0"; // srebro
   else if (data.ocjena === 3) boja = "#CD7F32"; // bronza
+  else if (data.ocjena <= 2) boja = "#e0e0e0"; // slabiji uspjeh
 
-  // Pozadina
-  doc.setFillColor(boja);
-  doc.rect(0, 0, 297, 210, "F"); // A4 u mm, landscape (842x595 u pt)
+  // Crtanje blagog okvira
+  doc.setDrawColor(boja);
+  doc.setLineWidth(3);
+  doc.rect(10, 10, 277, 190);
 
-  // Font i boje
-  doc.setTextColor(0, 0, 0);
+  // Naslov i tekst
   doc.setFont("Times", "bold");
-  doc.setFontSize(30);
-  doc.text("DIPLOMA", 148, 40, { align: "center" });
+  doc.setFontSize(36);
+  doc.setTextColor(30, 30, 30);
+  doc.text("DIPLOMA", 148.5, 45, { align: "center" });
 
-  doc.setFontSize(14);
-  doc.text("Sekcija 'Mladi matematičari' — OŠ Prokosovići", 148, 55, { align: "center" });
-
+  doc.setFontSize(16);
   doc.setFont("Times", "normal");
-  doc.setFontSize(18);
-  doc.text("Dodjeljuje se ekipi:", 148, 80, { align: "center" });
+  doc.text("Sekcija 'Mladi matematičari' — OŠ Prokosovići", 148.5, 60, { align: "center" });
+  doc.text("dodjeljuje priznanje ekipi", 148.5, 75, { align: "center" });
 
+  // Imena učenika
   doc.setFont("Times", "bold");
-  doc.setTextColor(10, 10, 80);
-  doc.text(`${data.ime1} i ${data.ime2}`, 148, 95, { align: "center" });
+  doc.setFontSize(22);
+  doc.setTextColor(0, 51, 102);
+  doc.text(`${data.ime1} ${data.ime2 ? "i " + data.ime2 : ""}`, 148.5, 95, { align: "center" });
 
-  doc.setFontSize(14);
+  // Podaci o uspjehu
+  doc.setFont("Times", "normal");
   doc.setTextColor(0, 0, 0);
-  doc.text(`Razred: ${data.razred}`, 148, 110, { align: "center" });
-  doc.text(`Uspjeh: ${data.postotak.toFixed(1)}%`, 148, 120, { align: "center" });
-  doc.text(`Ocjena: ${data.ocjena}`, 148, 130, { align: "center" });
+  doc.setFontSize(15);
+  doc.text(`Razredi: ${data.razred1 || "?"} i ${data.razred2 || "?"}`, 148.5, 110, { align: "center" });
+  doc.text(`Uspjeh: ${data.postotak.toFixed(1)}%`, 148.5, 120, { align: "center" });
+  doc.text(`Ocjena: ${data.ocjena}`, 148.5, 130, { align: "center" });
+
+  // Linija i potpis
+  doc.setDrawColor(0, 0, 120);
+  doc.line(50, 160, 120, 160);
 
   doc.setFont("Times", "italic");
+  doc.setFontSize(13);
+  doc.text("prof. Elvir Čajić", 85, 168, { align: "center" });
+  doc.text("Voditelj sekcije", 85, 176, { align: "center" });
+
+  // Dno diplome
+  doc.setFont("Times", "normal");
   doc.setFontSize(12);
-  doc.text("Voditelj sekcije:", 40, 160);
-  doc.text("prof. Elvir Čajić", 40, 168);
-  doc.text("OŠ Prokosovići — 2025", 40, 176);
+  doc.text("OŠ Prokosovići — 2025", 148.5, 190, { align: "center" });
 
-  // Potpisna linija
-  doc.setDrawColor(0, 0, 120);
-  doc.line(38, 178, 100, 178);
-
+  // Spremi PDF
   doc.save(`Diploma_${data.ime1}_${data.ime2}.pdf`);
 }
 
@@ -304,4 +314,5 @@ if (obrisiBtn) {
   a.click();
   document.body.removeChild(a);
 }
+
 
