@@ -1,67 +1,60 @@
 <!DOCTYPE html>
-<html lang="bs">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>🧮 Kviz — Mladi matematičari | OŠ Prokosovići</title>
+  <title>Kviz - Mladi matematicari | OS Prokosovici</title>
   <link rel="stylesheet" href="style.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
-
 <body>
   <header>
-    <h1>🧮 Kviz — Mladi matematičari</h1>
-    <p>OŠ Prokosovići | Voditelj sekcije: <b>prof. Elvir Čajić</b></p>
-    <div id="sat"></div>
+    <h1>Kviz - Mladi matematicari</h1>
+    <p>OS Prokosovici | Voditelj sekcije: prof. Elvir Cajic</p>
   </header>
 
-  <main id="main-container">
-    <!-- PRIJAVA EKIPE -->
+  <main>
     <section id="prijava">
       <h2>Prijava ekipe</h2>
-      <p style="text-align:center; color:#333;">Ekipe čine dva učenika (razredi 5–9 mogu biti različiti)</p>
+      <p style="text-align:center;">Ekipe cine dva ucenika (razredi 5–9 mogu biti razliciti)</p>
 
       <div class="ekipa-flex">
-        <!-- UČENIK 1 -->
         <div class="ucenik-blok">
-          <h3>Učenik 1</h3>
-          <input type="text" id="ime1" placeholder="Ime" required>
-          <input type="text" id="prezime1" placeholder="Prezime" required>
-          <label for="razred1">Razred:</label>
-          <select id="razred1" required>
-            <option value="">Odaberi razred</option>
+          <h3>Ucenik 1</h3>
+          <input type="text" id="ime1" placeholder="Ime">
+          <input type="text" id="prezime1" placeholder="Prezime">
+          <label>Razred:</label>
+          <select id="razred1">
+            <option value="">Odaberi</option>
             <option>5</option><option>6</option><option>7</option><option>8</option><option>9</option>
           </select>
         </div>
 
-        <!-- UČENIK 2 -->
         <div class="ucenik-blok">
-          <h3>Učenik 2</h3>
-          <input type="text" id="ime2" placeholder="Ime" required>
-          <input type="text" id="prezime2" placeholder="Prezime" required>
-          <label for="razred2">Razred:</label>
-          <select id="razred2" required>
-            <option value="">Odaberi razred</option>
+          <h3>Ucenik 2</h3>
+          <input type="text" id="ime2" placeholder="Ime">
+          <input type="text" id="prezime2" placeholder="Prezime">
+          <label>Razred:</label>
+          <select id="razred2">
+            <option value="">Odaberi</option>
             <option>5</option><option>6</option><option>7</option><option>8</option><option>9</option>
           </select>
         </div>
       </div>
 
-      <!-- IZBOR NIVOA -->
-      <h3 style="text-align:center; margin-top:20px;">Odaberi nivo kviza</h3>
+      <h3>Odaberi nivo kviza</h3>
       <div id="izborNivoa" style="text-align:center;">
-        <label><input type="radio" name="nivo" value="bronza" checked> 🟤 Bronza (lakši nivo)</label><br>
-        <label><input type="radio" name="nivo" value="srebro"> ⚪ Srebro (srednji nivo)</label><br>
-        <label><input type="radio" name="nivo" value="zlato"> 🟡 Zlato (teži nivo)</label>
+        <label><input type="radio" name="nivo" value="bronza" checked> Bronza</label><br>
+        <label><input type="radio" name="nivo" value="srebro"> Srebro</label><br>
+        <label><input type="radio" name="nivo" value="zlato"> Zlato</label>
       </div>
 
-      <button id="startBtn">🚀 Započni kviz</button>
+      <button id="startBtn">Započni kviz</button>
 
       <div class="nastavnik-link">
         <a href="#" id="nastavnikPrijava">👨‍🏫 Prijava nastavnika</a>
       </div>
 
-      <!-- SKRIVENA FORMA ZA NASTAVNIKA -->
       <div id="nastavnikForma" class="hidden">
         <h3>Prijava nastavnika</h3>
         <input type="password" id="nastavnikLozinka" placeholder="Unesi pristupni kod">
@@ -69,66 +62,30 @@
       </div>
     </section>
 
-    <!-- KVIZ -->
     <section id="kviz" class="hidden">
       <div id="timer">⏳ 15:00</div>
       <div id="pitanja"></div>
-      <button id="zavrsiBtn">✅ Završi kviz</button>
+      <button id="zavrsiBtn">Završi kviz</button>
     </section>
 
-    <!-- REZULTAT -->
     <section id="rezultat" class="hidden">
       <h2>Rezultat kviza</h2>
       <p id="rezime"></p>
       <p id="ocjena"></p>
-      <div id="tacni" style="margin:20px 0;"></div>
+      <div id="tacni"></div>
       <button id="diplomaBtn">🎓 Preuzmi diplomu</button>
       <button onclick="window.location.reload()">🔄 Novi pokušaj</button>
     </section>
   </main>
 
   <footer>
-    <p>&copy; 2025 OŠ Prokosovići — Sekcija Mladi matematičari</p>
+    <p>&copy; 2025 OS Prokosovici — Sekcija Mladi matematicari</p>
   </footer>
 
   <script src="script.js"></script>
-  <script>
-    // tajna kombinacija za rezultate
-    document.addEventListener("keydown", (e) => {
-      if (e.altKey && e.key.toLowerCase() === "r") {
-        window.location.href = "rezultati.html";
-      }
-    });
-
-    // prijava nastavnika
-    document.getElementById("nastavnikPrijava").addEventListener("click", (e) => {
-      e.preventDefault();
-      document.getElementById("nastavnikForma").classList.toggle("hidden");
-    });
-
-    document.getElementById("nastavnikBtn").addEventListener("click", () => {
-      const pass = document.getElementById("nastavnikLozinka").value.trim();
-      if (pass === "elvir123") {
-        alert("Dobrodošli, profesore Čajiću!");
-        window.location.href = "rezultati.html";
-      } else {
-        alert("Pogrešan pristupni kod!");
-      }
-    });
-
-    // sat u zaglavlju
-    function osvjeziSat() {
-      const sad = new Date();
-      const h = String(sad.getHours()).padStart(2, "0");
-      const m = String(sad.getMinutes()).padStart(2, "0");
-      const s = String(sad.getSeconds()).padStart(2, "0");
-      document.getElementById("sat").textContent = `${h}:${m}:${s}`;
-    }
-    setInterval(osvjeziSat, 1000);
-    osvjeziSat();
-  </script>
 </body>
 </html>
+
 
 
 
