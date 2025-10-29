@@ -181,4 +181,77 @@ document.addEventListener("DOMContentLoaded", () => {
     initKviz(nivo);
   });
 });
+// ------------------ PREGLED REZULTATA ------------------
+function prikaziSveRezultate() {
+  const tabela = document.getElementById("tabela-rezultata");
+  if (!tabela) return;
+
+  let rezultati = [];
+  for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i);
+    if (key.startsWith("rezultat_")) {
+      rezultati.push(JSON.parse(localStorage.getItem(key)));
+    }
+  }
+
+  if (rezultati.length === 0) {
+    tabela.innerHTML = "<tr><td colspan='7'>Nema pohranjenih rezultata.</td></tr>";
+    document.getElementById("analiza").textContent = "Još nema zapisa o kvizovima.";
+    return;
+  }
+
+  rezultati.sort((a, b) => b.postotak - a.postotak);
+
+  tabela.innerHTML = `
+    <tr>
+      <th>#</th>
+      <th>Učenik 1</th>
+      <th>Učenik 2</th>
+      <th>Razred</th>
+      <th>Bodovi</th>
+      <th>%</th>
+      <th>Ocjena</th>
+    </tr>`;
+
+  rezultati.forEach((r, i) => {
+    tabela.innerHTML += `
+      <tr>
+        <td>${i + 1}</td>
+        <td>${r.ime1}</td>
+        <td>${r.ime2}</td>
+        <td>${r.razred}</td>
+        <td>${r.bodovi}</td>
+        <td>${r.postotak.toFixed(1)}</td>
+        <td>${r.ocjena}</td>
+      </tr>`;
+  });
+
+  const prosjek = (
+    rezultati.reduce((s, r) => s + r.postotak, 0) / rezultati.length
+  ).toFixed(1);
+
+  document.getElementById("analiza").textContent =
+    `Ukupno ekipa: ${rezultati.length} | Prosječan uspjeh: ${prosjek}%`;
+
+  const exportBtn = document.getElementById("exportBtn");
+  exportBtn.addEventListener("click", () => exportCSV(rezultati));
+}
+
+// ------------------ IZVOZ CSV ------------------
+function exportCSV(data) {
+  let csv = "Učenik 1,Učenik 2,Razred,Bodovi,Postotak,Ocjena\n";
+  data.forEach(r => {
+    csv += `${r.ime1},${r.ime2},${r.razred},${r.bodovi},${r.postotak.toFixed(1)},${r.ocjena}\n`;
+  });
+
+  const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "rezultati_kvizova.csv";
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+}
+
 
