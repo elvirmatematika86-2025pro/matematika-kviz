@@ -128,7 +128,7 @@ function generisiDiplomu() {
 
   doc.setFont("helvetica", "normal");
   doc.setFontSize(16);
-  doc.text("Sekcija 'Mladi matematičari' — OŠ Prokosovići", 148.5, 65, { align: "center" });
+  doc.text("Sekcija 'Mladi matematicari' — OS Prokosovici", 148.5, 65, { align: "center" });
   doc.text("dodjeljuje priznanje ekipi:", 148.5, 75, { align: "center" });
 
   doc.setFontSize(22);
@@ -141,9 +141,9 @@ function generisiDiplomu() {
 
   doc.line(50, 165, 120, 165);
   doc.setFontSize(13);
-  doc.text("prof. Elvir Čajić", 85, 172, { align: "center" });
+  doc.text("prof. Elvir Cajic", 85, 172, { align: "center" });
   doc.text("Voditelj sekcije", 85, 180, { align: "center" });
-  doc.text("OŠ Prokosovići — 2025", 148.5, 192, { align: "center" });
+  doc.text("OS Prokosovići — 2025", 148.5, 192, { align: "center" });
 
   doc.save(`Diploma_${data.ime1}_${data.ime2}.pdf`);
 }
@@ -181,3 +181,4 @@ document.addEventListener("DOMContentLoaded", () => {
     initKviz(nivo);
   });
 });
+
