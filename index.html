@@ -11,7 +11,8 @@
 <body>
   <header>
     <h1>🧮 Kviz — Mladi matematičari</h1>
-    <p>OŠ Prokosovići | Voditelj sekcije: prof. Elvir Čajić</p>
+    <p>OŠ Prokosovići | Voditelj sekcije: <b>prof. Elvir Čajić</b></p>
+    <div id="sat"></div>
   </header>
 
   <main id="main-container">
@@ -29,11 +30,7 @@
           <label for="razred1">Razred:</label>
           <select id="razred1" required>
             <option value="">Odaberi razred</option>
-            <option>5</option>
-            <option>6</option>
-            <option>7</option>
-            <option>8</option>
-            <option>9</option>
+            <option>5</option><option>6</option><option>7</option><option>8</option><option>9</option>
           </select>
         </div>
 
@@ -45,11 +42,7 @@
           <label for="razred2">Razred:</label>
           <select id="razred2" required>
             <option value="">Odaberi razred</option>
-            <option>5</option>
-            <option>6</option>
-            <option>7</option>
-            <option>8</option>
-            <option>9</option>
+            <option>5</option><option>6</option><option>7</option><option>8</option><option>9</option>
           </select>
         </div>
       </div>
@@ -62,7 +55,7 @@
         <label><input type="radio" name="nivo" value="zlato"> 🟡 Zlato (teži nivo)</label>
       </div>
 
-      <button id="startBtn">Započni kviz</button>
+      <button id="startBtn">🚀 Započni kviz</button>
 
       <div class="nastavnik-link">
         <a href="#" id="nastavnikPrijava">👨‍🏫 Prijava nastavnika</a>
@@ -80,7 +73,7 @@
     <section id="kviz" class="hidden">
       <div id="timer">⏳ 15:00</div>
       <div id="pitanja"></div>
-      <button id="zavrsiBtn">Završi kviz</button>
+      <button id="zavrsiBtn">✅ Završi kviz</button>
     </section>
 
     <!-- REZULTAT -->
@@ -99,72 +92,43 @@
   </footer>
 
   <script src="script.js"></script>
-
   <script>
-    // --- Tajna kombinacija za prikaz rezultata ---
+    // tajna kombinacija za rezultate
     document.addEventListener("keydown", (e) => {
       if (e.altKey && e.key.toLowerCase() === "r") {
         window.location.href = "rezultati.html";
       }
     });
 
-    // --- Prijava nastavnika (tajni kod) ---
-    const link = document.getElementById("nastavnikPrijava");
-    const forma = document.getElementById("nastavnikForma");
-    const nastavnikBtn = document.getElementById("nastavnikBtn");
-
-    if (link) {
-      link.addEventListener("click", (e) => {
-        e.preventDefault();
-        forma.classList.toggle("hidden");
-      });
-    }
-
-    if (nastavnikBtn) {
-      nastavnikBtn.addEventListener("click", () => {
-        const pass = document.getElementById("nastavnikLozinka").value.trim();
-        if (pass === "elvir123") {
-          alert("Dobrodošli, profesore!");
-          window.location.href = "rezultati.html";
-        } else {
-          alert("Pogrešan pristupni kod!");
-        }
-      });
-    }
-
-    // --- Pokretanje kviza ---
-    document.addEventListener("DOMContentLoaded", () => {
-      const startBtn = document.getElementById("startBtn");
-      if (!startBtn) return;
-
-      startBtn.addEventListener("click", () => {
-        const ime1 = document.getElementById("ime1").value.trim();
-        const prezime1 = document.getElementById("prezime1").value.trim();
-        const ime2 = document.getElementById("ime2").value.trim();
-        const prezime2 = document.getElementById("prezime2").value.trim();
-        const razred1 = document.getElementById("razred1").value;
-        const razred2 = document.getElementById("razred2").value;
-        const nivo = document.querySelector('input[name="nivo"]:checked')?.value || "bronza";
-
-        if (!ime1 || !prezime1 || !ime2 || !prezime2) {
-          alert("Unesite imena oba učenika!");
-          return;
-        }
-
-        localStorage.setItem("ekipa", JSON.stringify({
-          ucenik1: `${ime1} ${prezime1}`,
-          ucenik2: `${ime2} ${prezime2}`,
-          razred: `${razred1}/${razred2}`,
-        }));
-
-        document.getElementById("prijava").classList.add("hidden");
-        document.getElementById("kviz").classList.remove("hidden");
-
-        initKviz(nivo);
-      });
+    // prijava nastavnika
+    document.getElementById("nastavnikPrijava").addEventListener("click", (e) => {
+      e.preventDefault();
+      document.getElementById("nastavnikForma").classList.toggle("hidden");
     });
+
+    document.getElementById("nastavnikBtn").addEventListener("click", () => {
+      const pass = document.getElementById("nastavnikLozinka").value.trim();
+      if (pass === "elvir123") {
+        alert("Dobrodošli, profesore Čajiću!");
+        window.location.href = "rezultati.html";
+      } else {
+        alert("Pogrešan pristupni kod!");
+      }
+    });
+
+    // sat u zaglavlju
+    function osvjeziSat() {
+      const sad = new Date();
+      const h = String(sad.getHours()).padStart(2, "0");
+      const m = String(sad.getMinutes()).padStart(2, "0");
+      const s = String(sad.getSeconds()).padStart(2, "0");
+      document.getElementById("sat").textContent = `${h}:${m}:${s}`;
+    }
+    setInterval(osvjeziSat, 1000);
+    osvjeziSat();
   </script>
 </body>
 </html>
+
 
 
