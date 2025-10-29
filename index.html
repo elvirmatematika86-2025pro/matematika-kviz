@@ -1,16 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bs">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kviz - Mladi matematicari | OS Prokosovici</title>
+  <title>Kviz — Mladi matematičari OŠ Prokosovići</title>
   <link rel="stylesheet" href="style.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
   <header>
-    <h1>Kviz - Mladi matematicari</h1>
-    <p>OS Prokosovici | Voditelj sekcije: prof. Elvir Cajic</p>
+    <h1>🧮 Mladi matematičari — OŠ Prokosovići</h1>
+    <p>Voditelj sekcije: prof. Elvir Čajić</p>
   </header>
 
   <main>
@@ -42,51 +41,64 @@
         </div>
       </div>
 
-      <h3>Odaberi nivo kviza</h3>
-      <div id="izborNivoa" style="text-align:center;">
-        <label><input type="radio" name="nivo" value="bronza" checked> Bronza</label><br>
-        <label><input type="radio" name="nivo" value="srebro"> Srebro</label><br>
-        <label><input type="radio" name="nivo" value="zlato"> Zlato</label>
-      </div>
-
-      <button id="startBtn">Započni kviz</button>
-
-      <div class="nastavnik-link">
-        <a href="#" id="nastavnikPrijava">👨‍🏫 Prijava nastavnika</a>
-      </div>
-
-      <div id="nastavnikForma" class="hidden">
-        <h3>Prijava nastavnika</h3>
-        <input type="password" id="nastavnikLozinka" placeholder="Unesi pristupni kod">
-        <button id="nastavnikBtn">Prijavi se</button>
-      </div>
+      <button id="spremiBtn">Spremi ekipu</button>
     </section>
 
-    <section id="kviz" class="hidden">
-      <div id="timer">⏳ 15:00</div>
-      <div id="pitanja"></div>
-      <button id="zavrsiBtn">Završi kviz</button>
-    </section>
+    <section id="nivo-kviz" class="hidden">
+      <h2>Izaberi nivo kviza</h2>
+      <p class="opis">
+        Svaki kviz ima 50 pitanja i 15 minuta vremena.  
+        Pokažite znanje i osvojite svoju diplomu!
+      </p>
 
-    <section id="rezultat" class="hidden">
-      <h2>Rezultat kviza</h2>
-      <p id="rezime"></p>
-      <p id="ocjena"></p>
-      <div id="tacni"></div>
-      <button id="diplomaBtn">🎓 Preuzmi diplomu</button>
-      <button onclick="window.location.reload()">🔄 Novi pokušaj</button>
+      <div class="nivo-container">
+        <a href="kviz1.html" class="btn bronze">🥉 Bronzani nivo<br><small>Osnovna aritmetika</small></a>
+        <a href="kviz2.html" class="btn silver">🥈 Srebrni nivo<br><small>Izrazi i jednadžbe</small></a>
+        <a href="kviz3.html" class="btn gold">🏆 Zlatni nivo<br><small>Geometrija i logika</small></a>
+      </div>
     </section>
   </main>
 
   <footer>
-    <p>&copy; 2025 OS Prokosovici — Sekcija Mladi matematicari</p>
+    <p>&copy; 2025 OŠ Prokosovići — Sekcija “Mladi matematičari” | prof. Elvir Čajić</p>
   </footer>
+<script>
+  // Tajni pristup za nastavnika – pritisni ALT + R
+  document.addEventListener("keydown", (e) => {
+    if (e.altKey && e.key.toLowerCase() === "r") {
+      window.location.href = "rezultati.html";
+    }
+  });
+</script>
 
-  <script src="script.js"></script>
+  <script>
+    const ime1 = document.getElementById('ime1');
+    const prezime1 = document.getElementById('prezime1');
+    const ime2 = document.getElementById('ime2');
+    const prezime2 = document.getElementById('prezime2');
+    const razred = document.getElementById('razred');
+    const spremiBtn = document.getElementById('spremiBtn');
+
+    spremiBtn.addEventListener('click', () => {
+      if (!ime1.value || !prezime1.value || !ime2.value || !prezime2.value || !razred.value) {
+        alert('Molimo unesite sva polja!');
+        return;
+      }
+
+      const ekipa = {
+        ucenik1: `${ime1.value} ${prezime1.value}`,
+        ucenik2: `${ime2.value} ${prezime2.value}`,
+        razred: razred.value
+      };
+
+      localStorage.setItem('ekipa', JSON.stringify(ekipa));
+      document.getElementById('prijava').classList.add('hidden');
+      document.getElementById('nivo-kviz').classList.remove('hidden');
+    });
+  </script>
+  <p style="text-align:center; font-size:12px; color:#b0b0b0;">
+  <a href="rezultati.html" style="color:#b0b0b0; text-decoration:none;">.</a>
+</p>
+
 </body>
 </html>
-
-
-
-
-
