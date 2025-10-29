@@ -170,9 +170,16 @@ function prikaziTacneOdgovore() {
 }
 
 // ------------------ Diploma ------------------
-function generisiDiplomu() {
+async function generisiDiplomu() {
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF({ orientation: "landscape", unit: "mm", format: "a4" });
+
+  // Učitaj font koji podržava čćšđž
+  const fontUrl = "https://cdn.jsdelivr.net/gh/elvirmatematika86-2025pro/matematika-kviz/DejaVuSans.ttf";
+  const fontBytes = await fetch(fontUrl).then(res => res.arrayBuffer());
+  doc.addFileToVFS("DejaVuSans.ttf", fontBytes);
+  doc.addFont("DejaVuSans.ttf", "DejaVuSans", "normal");
+  doc.setFont("DejaVuSans");
 
   // Učitaj zadnji rezultat
   let data = Object.values(localStorage).slice(-1)[0];
@@ -184,33 +191,30 @@ function generisiDiplomu() {
   else if (data.ocjena === 3) boja = "#CD7F32"; // bronza
   else if (data.ocjena <= 2) boja = "#e0e0e0"; // slabiji uspjeh
 
-  // Crtanje blagog okvira
+  // Okvir
   doc.setDrawColor(boja);
   doc.setLineWidth(3);
   doc.rect(10, 10, 277, 190);
 
-  // Naslov i tekst
-  doc.setFont("Times", "bold");
-  doc.setFontSize(36);
-  doc.setTextColor(30, 30, 30);
+  // Naslov
+  doc.setFontSize(38);
+  doc.setTextColor(0, 0, 0);
   doc.text("DIPLOMA", 148.5, 45, { align: "center" });
 
+  // Sekcija
   doc.setFontSize(16);
-  doc.setFont("Times", "normal");
   doc.text("Sekcija 'Mladi matematičari' — OŠ Prokosovići", 148.5, 60, { align: "center" });
   doc.text("dodjeljuje priznanje ekipi", 148.5, 75, { align: "center" });
 
   // Imena učenika
-  doc.setFont("Times", "bold");
   doc.setFontSize(22);
   doc.setTextColor(0, 51, 102);
   doc.text(`${data.ime1} ${data.ime2 ? "i " + data.ime2 : ""}`, 148.5, 95, { align: "center" });
 
   // Podaci o uspjehu
-  doc.setFont("Times", "normal");
-  doc.setTextColor(0, 0, 0);
   doc.setFontSize(15);
-  doc.text(`Razredi: ${data.razred1 || "?"} i ${data.razred2 || "?"}`, 148.5, 110, { align: "center" });
+  doc.setTextColor(0, 0, 0);
+  doc.text(`Razredi: ${data.razred || "?"}`, 148.5, 110, { align: "center" });
   doc.text(`Uspjeh: ${data.postotak.toFixed(1)}%`, 148.5, 120, { align: "center" });
   doc.text(`Ocjena: ${data.ocjena}`, 148.5, 130, { align: "center" });
 
@@ -218,20 +222,19 @@ function generisiDiplomu() {
   doc.setDrawColor(0, 0, 120);
   doc.line(50, 160, 120, 160);
 
-  doc.setFont("Times", "italic");
   doc.setFontSize(13);
+  doc.setTextColor(0, 0, 80);
   doc.text("prof. Elvir Čajić", 85, 168, { align: "center" });
   doc.text("Voditelj sekcije", 85, 176, { align: "center" });
 
   // Dno diplome
-  doc.setFont("Times", "normal");
   doc.setFontSize(12);
+  doc.setTextColor(0, 0, 0);
   doc.text("OŠ Prokosovići — 2025", 148.5, 190, { align: "center" });
 
   // Spremi PDF
   doc.save(`Diploma_${data.ime1}_${data.ime2}.pdf`);
 }
-
 
 // ------------------ Pomoćne funkcije ------------------
 function shuffle(arr) { return arr.sort(() => Math.random() - 0.5); }
@@ -346,6 +349,7 @@ document.addEventListener("DOMContentLoaded", () => {
     initKviz(nivo);
   });
 });
+
 
 
 
