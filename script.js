@@ -18,7 +18,6 @@ function initKviz(nivo) {
   document.getElementById("zavrsiBtn").addEventListener("click", zavrsiKviz);
   document.getElementById("diplomaBtn").addEventListener("click", generisiDiplomu);
 
-  // Reset prije generisanja
   const container = document.getElementById("pitanja");
   container.innerHTML = "";
   tacniOdgovori = [];
@@ -38,7 +37,6 @@ function generisiPitanja(nivo) {
   for (let i = 1; i <= 50; i++) {
     let pitanje = "", rezultat;
 
-    // BRONZANI
     if (nivo === "bronza") {
       let a = rand(1, 20), b = rand(1, 20);
       const op = operacije[rand(0, 3)];
@@ -55,7 +53,6 @@ function generisiPitanja(nivo) {
       }
     }
 
-    // SREBRNI
     if (nivo === "srebro") {
       const tip = rand(0, 3);
       if (tip === 0) {
@@ -81,7 +78,6 @@ function generisiPitanja(nivo) {
       }
     }
 
-    // ZLATNI
     if (nivo === "zlato") {
       const tip = rand(0, 4);
       if (tip === 0) {
@@ -125,6 +121,7 @@ function generisiPitanja(nivo) {
 function startTimer() {
   const timer = document.getElementById("timer");
   clearInterval(timerInterval);
+  vrijeme = 15 * 60;
 
   timerInterval = setInterval(() => {
     let min = Math.floor(vrijeme / 60);
@@ -186,47 +183,65 @@ function prikaziTacneOdgovore() {
 }
 
 // ------------------ Diploma ------------------
-async function generisiDiplomu() {
+function generisiDiplomu() {
+  const { jsPDF } = window.jspdf;
   const doc = new jsPDF({ orientation: "landscape", unit: "mm", format: "a4" });
-  const fontUrl = "https://cdn.jsdelivr.net/gh/vercel/fonts-archive/DejaVuSans.ttf";
-  const fontBytes = await fetch(fontUrl).then(res => res.arrayBuffer());
-  doc.addFileToVFS("DejaVuSans.ttf", fontBytes);
-  doc.addFont("DejaVuSans.ttf", "DejaVuSans", "normal");
-  doc.setFont("DejaVuSans");
 
-  let data = Object.values(localStorage).slice(-1)[0];
-  data = JSON.parse(data);
+  let kljucevi = Object.keys(localStorage).filter(k => k.startsWith("rezultat_"));
+  if (kljucevi.length === 0) {
+    alert("Nema podataka za diplomu!");
+    return;
+  }
+
+  let data = JSON.parse(localStorage.getItem(kljucevi.sort().pop()));
 
   let boja = "#FFD700";
   if (data.ocjena === 4) boja = "#C0C0C0";
   else if (data.ocjena === 3) boja = "#CD7F32";
+  else if (data.ocjena <= 2) boja = "#E0E0E0";
 
+  doc.setFillColor(255, 255, 255);
+  doc.rect(0, 0, 297, 210, "F");
   doc.setDrawColor(boja);
   doc.setLineWidth(3);
   doc.rect(10, 10, 277, 190);
 
-  doc.setFontSize(38);
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(36);
   doc.text("DIPLOMA", 148.5, 45, { align: "center" });
+
+  doc.setFont("helvetica", "normal");
   doc.setFontSize(16);
-  doc.text("Sekcija 'Mladi matematičari' — OŠ Prokosovići", 148.5, 60, { align: "center" });
+  doc.text("Sekcija 'Mladi matematičari' — OŠ Prokosovići", 148.5, 65, { align: "center" });
   doc.text("dodjeljuje priznanje ekipi:", 148.5, 75, { align: "center" });
 
   doc.setFontSize(22);
-  doc.text(`${data.ime1} i ${data.ime2}`, 148.5, 95, { align: "center" });
+  doc.text(`${data.ime1}${data.ime2 ? " i " + data.ime2 : ""}`, 148.5, 95, { align: "center" });
 
   doc.setFontSize(15);
-  doc.text(`Razred: ${data.razred}`, 148.5, 110, { align: "center" });
+  doc.text(`Razredi: ${data.razred}`, 148.5, 110, { align: "center" });
   doc.text(`Uspjeh: ${data.postotak.toFixed(1)}%`, 148.5, 120, { align: "center" });
   doc.text(`Ocjena: ${data.ocjena}`, 148.5, 130, { align: "center" });
 
-  doc.line(50, 160, 120, 160);
+  doc.line(50, 165, 120, 165);
   doc.setFontSize(13);
-  doc.text("prof. Elvir Čajić", 85, 168, { align: "center" });
-  doc.text("Voditelj sekcije", 85, 176, { align: "center" });
-  doc.text("OŠ Prokosovići — 2025", 148.5, 190, { align: "center" });
+  doc.text("prof. Elvir Čajić", 85, 172, { align: "center" });
+  doc.text("Voditelj sekcije", 85, 180, { align: "center" });
+  doc.text("OŠ Prokosovići — 2025", 148.5, 192, { align: "center" });
 
   doc.save(`Diploma_${data.ime1}_${data.ime2}.pdf`);
 }
+
+// ------------------ Brisanje svih rezultata ------------------
+document.addEventListener("keydown", (e) => {
+  if (e.altKey && e.key.toLowerCase() === "x") {
+    if (confirm("Da li sigurno želiš obrisati sve rezultate?")) {
+      localStorage.clear();
+      alert("Svi rezultati su obrisani.");
+      location.reload();
+    }
+  }
+});
 
 // ------------------ Alati ------------------
 function shuffle(arr) { return arr.sort(() => Math.random() - 0.5); }
@@ -261,7 +276,3 @@ document.addEventListener("DOMContentLoaded", () => {
     initKviz(nivo);
   });
 });
-
-
-
-
