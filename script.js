@@ -33,14 +33,14 @@ function generisiPitanja(nivo) {
       let a = rand(1, 20), b = rand(1, 20);
       const op = operacije[rand(0, 3)];
       switch (op) {
-        case "+": rezultat = a + b; pitanje = ${a} + ${b}; break;
-        case "-": rezultat = a - b; pitanje = ${a} - ${b}; break;
-        case "×": rezultat = a * b; pitanje = ${a} × ${b}; break;
-        case "÷": b = rand(1, 9); rezultat = (a * b) / b; pitanje = (${a*b}) ÷ ${b}; break;
+        case "+": rezultat = a + b; pitanje = `${a} + ${b}`; break;
+        case "-": rezultat = a - b; pitanje = `${a} - ${b}`; break;
+        case "×": rezultat = a * b; pitanje = `${a} × ${b}`; break;
+        case "÷": b = rand(1, 9); rezultat = (a * b) / b; pitanje = `(${a*b}) ÷ ${b}`; break;
       }
       if (Math.random() > 0.7) {
         let c = rand(1, 10);
-        pitanje = (${a} + ${b}) × ${c};
+        pitanje = `(${a} + ${b}) × ${c}`;
         rezultat = (a + b) * c;
       }
     }
@@ -50,23 +50,23 @@ function generisiPitanja(nivo) {
       const tip = rand(0, 3);
       if (tip === 0) {
         let a = rand(2, 10), b = rand(1, 10), c = rand(1, 10);
-        pitanje = ${a} × (${b} + ${c});
+        pitanje = `${a} × (${b} + ${c})`;
         rezultat = a * (b + c);
       }
       if (tip === 1) {
         let a = rand(2, 10), x = rand(1, 10);
-        pitanje = Riješi: ${a}x = ${a * x};
+        pitanje = `Riješi: ${a}x = ${a * x}`;
         rezultat = x;
       }
       if (tip === 2) {
         let b = [10, 20, 25, 50][rand(0, 3)];
         let broj = rand(50, 250);
-        pitanje = Koliko je ${b}% od ${broj}?;
+        pitanje = `Koliko je ${b}% od ${broj}?`;
         rezultat = (b / 100) * broj;
       }
       if (tip === 3) {
         let a = rand(20, 80), b = rand(2, 10);
-        pitanje = Koliki je ostatak pri dijeljenju ${a} ÷ ${b}?;
+        pitanje = `Koliki je ostatak pri dijeljenju ${a} ÷ ${b}?`;
         rezultat = a % b;
       }
     }
@@ -76,38 +76,38 @@ function generisiPitanja(nivo) {
       const tip = rand(0, 4);
       if (tip === 0) {
         let a = rand(2, 6), b = rand(2, 3);
-        pitanje = Izračunaj: ${a}ⁿ, za n = ${b};
+        pitanje = `Izračunaj: ${a}ⁿ, za n = ${b}`;
         rezultat = Math.pow(a, b);
       }
       if (tip === 1) {
         let a = rand(4, 10), b = rand(3, 8);
-        pitanje = Izračunaj obim kvadrata sa stranicom ${a} cm;
+        pitanje = `Izračunaj obim kvadrata sa stranicom ${a} cm`;
         rezultat = 4 * a;
       }
       if (tip === 2) {
         let a = rand(3, 10), b = rand(4, 12);
-        pitanje = Površina pravougaonika stranica ${a} cm i ${b} cm;
+        pitanje = `Površina pravougaonika stranica ${a} cm i ${b} cm`;
         rezultat = a * b;
       }
       if (tip === 3) {
         let broj = rand(100, 300);
-        pitanje = U razredu je ${broj} učenika. Ako ih je 1/4 dobilo peticu, koliko je to učenika?;
+        pitanje = `U razredu je ${broj} učenika. Ako ih je 1/4 dobilo peticu, koliko je to učenika?`;
         rezultat = broj / 4;
       }
       if (tip === 4) {
         let x = rand(2, 9);
-        pitanje = Riješi: 3x + 6 = ${3*x + 6};
+        pitanje = `Riješi: 3x + 6 = ${3*x + 6}`;
         rezultat = x;
       }
     }
 
     tacniOdgovori.push(rezultat);
     const opcije = shuffle([rezultat, rezultat + 1, rezultat - 1, rezultat + 2]);
-    container.innerHTML += 
+    container.innerHTML += `
       <div class="pitanje">
         <p>${i}. ${pitanje}</p>
-        ${opcije.map(v => <label><input type="radio" name="q${i}" value="${v}"> ${v}</label>).join("")}
-      </div>;
+        ${opcije.map(v => `<label><input type="radio" name="q${i}" value="${v}"> ${v}</label>`).join("")}
+      </div>`;
   }
 }
 
@@ -118,7 +118,7 @@ function startTimer() {
     let min = Math.floor(vrijeme / 60);
     let sec = vrijeme % 60;
     sec = sec < 10 ? "0" + sec : sec;
-    timer.textContent = ⏳ ${min}:${sec};
+    timer.textContent = `⏳ ${min}:${sec}`;
     if (--vrijeme <= 0) {
       clearInterval(timerInterval);
       zavrsiKviz();
@@ -136,7 +136,7 @@ function zavrsiKviz() {
   odgovoriKorisnika = [];
 
   for (let i = 1; i <= 50; i++) {
-    const checked = document.querySelector(input[name="q${i}"]:checked);
+    const checked = document.querySelector(`input[name="q${i}"]:checked`);
     let odgovor = checked ? parseFloat(checked.value) : null;
     odgovoriKorisnika.push(odgovor);
     if (odgovor === tacniOdgovori[i - 1]) bodovi++;
@@ -146,9 +146,9 @@ function zavrsiKviz() {
   let ocjena = postotak >= 90 ? 5 : postotak >= 75 ? 4 : postotak >= 60 ? 3 : postotak >= 45 ? 2 : 1;
 
   document.getElementById("rezime").innerHTML =
-    Ekipa: <b>${ime1}</b> i <b>${ime2}</b> (razred ${razred})<br> +
-    Bodovi: <b>${bodovi}/50</b> (${postotak.toFixed(1)}%);
-  document.getElementById("ocjena").innerHTML = Ocjena: <b>${ocjena}</b>;
+    `Ekipa: <b>${ime1}</b> i <b>${ime2}</b> (razred ${razred})<br>` +
+    `Bodovi: <b>${bodovi}/50</b> (${postotak.toFixed(1)}%)`;
+  document.getElementById("ocjena").innerHTML = `Ocjena: <b>${ocjena}</b>`;
 
   prikaziTacneOdgovore();
 
@@ -165,75 +165,81 @@ function prikaziTacneOdgovore() {
     const korisnicki = odgovoriKorisnika[i];
     const tacan = tacniOdgovori[i];
     const stil = korisnicki === tacan ? "color:green" : "color:red";
-    lista.innerHTML += <p>${i+1}. Tačan odgovor: <b>${tacan}</b> — Tvoj: <span style="${stil}">${korisnicki ?? "bez odgovora"}</span></p>;
+    lista.innerHTML += `<p>${i+1}. Tačan odgovor: <b>${tacan}</b> — Tvoj: <span style="${stil}">${korisnicki ?? "bez odgovora"}</span></p>`;
   }
 }
 
 // ------------------ Diploma ------------------
-async function generisiDiplomu() {
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF({ orientation: "landscape", unit: "mm", format: "a4" });
+function generisiDiplomu() {
+  const doc = new jsPDF({ orientation: "landscape" });
 
-  // Učitaj font koji podržava čćšđž
-  const fontUrl = "https://cdn.jsdelivr.net/gh/elvirmatematika86-2025pro/matematika-kviz/DejaVuSans.ttf";
-  const fontBytes = await fetch(fontUrl).then(res => res.arrayBuffer());
-  doc.addFileToVFS("DejaVuSans.ttf", fontBytes);
-  doc.addFont("DejaVuSans.ttf", "DejaVuSans", "normal");
-  doc.setFont("DejaVuSans");
+  const data = JSON.parse(
+    localStorage.getItem(Object.keys(localStorage).filter(k => k.startsWith("rezultat_")).pop())
+  );
 
-  // Učitaj zadnji rezultat
-  let data = Object.values(localStorage).slice(-1)[0];
-  data = JSON.parse(data);
+  // Odabir boje prema ocjeni
+  let boja = "#FFD700";
+  if (data.ocjena === 4) boja = "#C0C0C0";
+  else if (data.ocjena === 3) boja = "#CD7F32";
+  else if (data.ocjena === 2) boja = "#ADD8E6";
+  else if (data.ocjena === 1) boja = "#F5B7B1";
 
-  // Boje diploma prema ocjeni
-  let boja = "#FFD700"; // zlato
-  if (data.ocjena === 4) boja = "#C0C0C0"; // srebro
-  else if (data.ocjena === 3) boja = "#CD7F32"; // bronza
-  else if (data.ocjena <= 2) boja = "#e0e0e0"; // slabiji uspjeh
+  // Pozadina
+  doc.setFillColor(boja);
+  doc.rect(0, 0, 842, 595, "F");
 
-  // Okvir
-  doc.setDrawColor(boja);
-  doc.setLineWidth(3);
-  doc.rect(10, 10, 277, 190);
+  // Stil fonta
+  doc.setFont("Times", "bold");
+  doc.setFontSize(40);
+  doc.setTextColor("#0a1a2f");
 
-  // Naslov
-  doc.setFontSize(38);
-  doc.setTextColor(0, 0, 0);
-  doc.text("DIPLOMA", 148.5, 45, { align: "center" });
+  // Naslov diplome
+  doc.text("DIPLOMA", 420, 120, { align: "center" });
 
-  // Sekcija
-  doc.setFontSize(16);
-  doc.text("Sekcija 'Mladi matematičari' — OŠ Prokosovići", 148.5, 60, { align: "center" });
-  doc.text("dodjeljuje priznanje ekipi", 148.5, 75, { align: "center" });
+  // Podnaslov
+  doc.setFontSize(20);
+  doc.setFont("Times", "italic");
+  doc.text("Sekcija 'Mladi matematičari' — OŠ Prokosovići", 420, 160, { align: "center" });
 
-  // Imena učenika
+  // Crta ispod
+  doc.setDrawColor("#0a1a2f");
+  doc.line(150, 170, 690, 170);
+
+  // Glavni tekst
+  doc.setFont("Times", "normal");
+  doc.setFontSize(18);
+  doc.text("Ova diploma se dodjeljuje ekipi:", 420, 210, { align: "center" });
+
+  doc.setFont("Times", "bold");
   doc.setFontSize(22);
-  doc.setTextColor(0, 51, 102);
-  doc.text(${data.ime1} ${data.ime2 ? "i " + data.ime2 : ""}, 148.5, 95, { align: "center" });
+  doc.text(`${data.ime1} i ${data.ime2}`, 420, 240, { align: "center" });
 
-  // Podaci o uspjehu
-  doc.setFontSize(15);
-  doc.setTextColor(0, 0, 0);
-  doc.text(Razredi: ${data.razred || "?"}, 148.5, 110, { align: "center" });
-  doc.text(Uspjeh: ${data.postotak.toFixed(1)}%, 148.5, 120, { align: "center" });
-  doc.text(Ocjena: ${data.ocjena}, 148.5, 130, { align: "center" });
+  doc.setFont("Times", "normal");
+  doc.setFontSize(18);
+  doc.text(`Razred: ${data.razred}`, 420, 270, { align: "center" });
+  doc.text(`Broj bodova: ${data.bodovi}/50`, 420, 300, { align: "center" });
+  doc.text(`Ocjena: ${data.ocjena}`, 420, 330, { align: "center" });
 
-  // Linija i potpis
-  doc.setDrawColor(0, 0, 120);
-  doc.line(50, 160, 120, 160);
+  // Crta prije potpisa
+  doc.line(150, 400, 690, 400);
 
-  doc.setFontSize(13);
-  doc.setTextColor(0, 0, 80);
-  doc.text("prof. Elvir Čajić", 85, 168, { align: "center" });
-  doc.text("Voditelj sekcije", 85, 176, { align: "center" });
+  // Potpis i škola
+  doc.setFont("Times", "italic");
+  doc.setFontSize(16);
+  doc.text("Voditelj sekcije:", 150, 440);
+  doc.setFont("Times", "bolditalic");
+  doc.text("prof. Elvir Čajić", 150, 460);
 
-  // Dno diplome
-  doc.setFontSize(12);
-  doc.setTextColor(0, 0, 0);
-  doc.text("OŠ Prokosovići — 2025", 148.5, 190, { align: "center" });
+  doc.setFont("Times", "italic");
+  doc.setTextColor("#0a1a2f");
+  doc.text("OŠ Prokosovići", 150, 490);
+
+  // Datum i godina
+  const datum = new Date().toLocaleDateString("bs-BA");
+  doc.text(`Datum: ${datum}`, 640, 490);
 
   // Spremi PDF
-  doc.save(Diploma_${data.ime1}_${data.ime2}.pdf);
+  doc.save(`Diploma_${data.ime1}_${data.ime2}.pdf`);
 }
 
 // ------------------ Pomoćne funkcije ------------------
@@ -255,7 +261,7 @@ function prikaziSveRezultate() {
   }
   rezultati.sort((a,b)=>b.postotak - a.postotak);
 
-  tabela.innerHTML = 
+  tabela.innerHTML = `
     <tr>
       <th>#</th>
       <th>Učenik 1</th>
@@ -264,10 +270,10 @@ function prikaziSveRezultate() {
       <th>Bodovi</th>
       <th>%</th>
       <th>Ocjena</th>
-    </tr>;
+    </tr>`;
 
   rezultati.forEach((r,i)=>{
-    tabela.innerHTML += 
+    tabela.innerHTML += `
       <tr>
         <td>${i+1}</td>
         <td>${r.ime1}</td>
@@ -276,12 +282,12 @@ function prikaziSveRezultate() {
         <td>${r.bodovi}</td>
         <td>${r.postotak.toFixed(1)}</td>
         <td>${r.ocjena}</td>
-      </tr>;
+      </tr>`;
   });
 
   const prosjek = (rezultati.reduce((s,r)=>s+r.postotak,0)/rezultati.length || 0).toFixed(1);
   document.getElementById("analiza").textContent =
-    Ukupno ekipa: ${rezultati.length} | Prosječan uspjeh: ${prosjek}%;
+    `Ukupno ekipa: ${rezultati.length} | Prosječan uspjeh: ${prosjek}%`;
 
   // Dodaj funkcionalnost export dugmeta
   const exportBtn = document.getElementById("exportBtn");
@@ -291,7 +297,7 @@ function prikaziSveRezultate() {
 function exportCSV(data) {
   let csv = "Učenik 1,Učenik 2,Razred,Bodovi,Postotak,Ocjena\n";
   data.forEach(r => {
-    csv += ${r.ime1},${r.ime2},${r.razred},${r.bodovi},${r.postotak.toFixed(1)},${r.ocjena}\n;
+    csv += `${r.ime1},${r.ime2},${r.razred},${r.bodovi},${r.postotak.toFixed(1)},${r.ocjena}\n`;
   });
 const obrisiBtn = document.getElementById("obrisiSve");
 if (obrisiBtn) {
@@ -317,36 +323,3 @@ if (obrisiBtn) {
   a.click();
   document.body.removeChild(a);
 }
-// ------------------ START KVIZA ------------------
-document.addEventListener("DOMContentLoaded", () => {
-  const startBtn = document.getElementById("startBtn");
-  if (!startBtn) return;
-
-  startBtn.addEventListener("click", () => {
-    const ime1 = document.getElementById("ime1").value.trim();
-    const prezime1 = document.getElementById("prezime1").value.trim();
-    const ime2 = document.getElementById("ime2").value.trim();
-    const prezime2 = document.getElementById("prezime2").value.trim();
-    const razred1 = document.getElementById("razred1").value;
-    const razred2 = document.getElementById("razred2").value;
-    const nivo = document.querySelector('input[name="nivo"]:checked')?.value || "bronza";
-
-    if (!ime1 || !prezime1 || !ime2 || !prezime2) {
-      alert("Unesite imena oba učenika!");
-      return;
-    }
-
-    localStorage.setItem("ekipa", JSON.stringify({
-      ucenik1: ${ime1} ${prezime1},
-      ucenik2: ${ime2} ${prezime2},
-      razred: ${razred1}/${razred2},
-    }));
-
-    // Sakrij prijavu i prikaži kviz
-    document.getElementById("prijava").classList.add("hidden");
-    document.getElementById("kviz").classList.remove("hidden");
-
-    initKviz(nivo);
-  });
-});
-
