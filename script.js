@@ -314,5 +314,38 @@ if (obrisiBtn) {
   a.click();
   document.body.removeChild(a);
 }
+// ------------------ START KVIZA ------------------
+document.addEventListener("DOMContentLoaded", () => {
+  const startBtn = document.getElementById("startBtn");
+  if (!startBtn) return;
+
+  startBtn.addEventListener("click", () => {
+    const ime1 = document.getElementById("ime1").value.trim();
+    const prezime1 = document.getElementById("prezime1").value.trim();
+    const ime2 = document.getElementById("ime2").value.trim();
+    const prezime2 = document.getElementById("prezime2").value.trim();
+    const razred1 = document.getElementById("razred1").value;
+    const razred2 = document.getElementById("razred2").value;
+    const nivo = document.querySelector('input[name="nivo"]:checked')?.value || "bronza";
+
+    if (!ime1 || !prezime1 || !ime2 || !prezime2) {
+      alert("Unesite imena oba učenika!");
+      return;
+    }
+
+    localStorage.setItem("ekipa", JSON.stringify({
+      ucenik1: `${ime1} ${prezime1}`,
+      ucenik2: `${ime2} ${prezime2}`,
+      razred: `${razred1}/${razred2}`,
+    }));
+
+    // Sakrij prijavu i prikaži kviz
+    document.getElementById("prijava").classList.add("hidden");
+    document.getElementById("kviz").classList.remove("hidden");
+
+    initKviz(nivo);
+  });
+});
+
 
 
