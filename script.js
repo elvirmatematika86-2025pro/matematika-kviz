@@ -1,12 +1,11 @@
-const { jsPDF } = window.jspdf;
-
+// ------------------ GLOBALNE PROMJENLJIVE ------------------
 let tacniOdgovori = [];
 let odgovoriKorisnika = [];
 let ime1, ime2, razred;
 let vrijeme = 15 * 60;
 let timerInterval;
 
-// ------------------ Inicijalizacija ------------------
+// ------------------ INICIJALIZACIJA KVIZA ------------------
 function initKviz(nivo) {
   const ekipa = JSON.parse(localStorage.getItem("ekipa"));
   if (ekipa) {
@@ -18,92 +17,28 @@ function initKviz(nivo) {
   document.getElementById("zavrsiBtn").addEventListener("click", zavrsiKviz);
   document.getElementById("diplomaBtn").addEventListener("click", generisiDiplomu);
 
-  const container = document.getElementById("pitanja");
-  container.innerHTML = "";
-  tacniOdgovori = [];
-  odgovoriKorisnika = [];
-
   generisiPitanja(nivo);
   startTimer();
 }
 
-// ------------------ Generisanje pitanja ------------------
+// ------------------ GENERISANJE PITANJA ------------------
 function generisiPitanja(nivo) {
   const container = document.getElementById("pitanja");
   const operacije = ["+", "-", "×", "÷"];
   container.innerHTML = "";
+  tacniOdgovori = [];
 
-  for (let i = 1; i <= 50; i++) {
-    let pitanje = "";
-    let rezultat;
+  for (let i = 1; i <= 10; i++) { // smanjeno radi testa
+    let pitanje = "", rezultat;
 
     if (nivo === "bronza") {
-      let a = rand(1, 20), b = rand(1, 20);
+      const a = rand(1, 20), b = rand(1, 20);
       const op = operacije[rand(0, 3)];
       switch (op) {
         case "+": rezultat = a + b; pitanje = `${a} + ${b}`; break;
         case "-": rezultat = a - b; pitanje = `${a} - ${b}`; break;
         case "×": rezultat = a * b; pitanje = `${a} × ${b}`; break;
-        case "÷": b = rand(1, 9); rezultat = (a * b) / b; pitanje = `(${a*b}) ÷ ${b}`; break;
-      }
-      if (Math.random() > 0.7) {
-        let c = rand(1, 10);
-        pitanje = `(${a} + ${b}) × ${c}`;
-        rezultat = (a + b) * c;
-      }
-    }
-
-    if (nivo === "srebro") {
-      const tip = rand(0, 3);
-      if (tip === 0) {
-        let a = rand(2, 10), b = rand(1, 10), c = rand(1, 10);
-        pitanje = `${a} × (${b} + ${c})`;
-        rezultat = a * (b + c);
-      }
-      if (tip === 1) {
-        let a = rand(2, 10), x = rand(1, 10);
-        pitanje = `Riješi: ${a}x = ${a * x}`;
-        rezultat = x;
-      }
-      if (tip === 2) {
-        let b = [10, 20, 25, 50][rand(0, 3)];
-        let broj = rand(50, 250);
-        pitanje = `Koliko je ${b}% od ${broj}?`;
-        rezultat = (b / 100) * broj;
-      }
-      if (tip === 3) {
-        let a = rand(20, 80), b = rand(2, 10);
-        pitanje = `Koliki je ostatak pri dijeljenju ${a} ÷ ${b}?`;
-        rezultat = a % b;
-      }
-    }
-
-    if (nivo === "zlato") {
-      const tip = rand(0, 4);
-      if (tip === 0) {
-        let a = rand(2, 6), b = rand(2, 3);
-        pitanje = `Izračunaj: ${a}ⁿ, za n = ${b}`;
-        rezultat = Math.pow(a, b);
-      }
-      if (tip === 1) {
-        let a = rand(4, 10);
-        pitanje = `Obim kvadrata sa stranicom ${a} cm`;
-        rezultat = 4 * a;
-      }
-      if (tip === 2) {
-        let a = rand(3, 10), b = rand(4, 12);
-        pitanje = `Površina pravougaonika ${a} cm i ${b} cm`;
-        rezultat = a * b;
-      }
-      if (tip === 3) {
-        let broj = rand(100, 300);
-        pitanje = `Ako 1/4 od ${broj} učenika ima peticu, koliko je to učenika?`;
-        rezultat = broj / 4;
-      }
-      if (tip === 4) {
-        let x = rand(2, 9);
-        pitanje = `Riješi: 3x + 6 = ${3*x + 6}`;
-        rezultat = x;
+        case "÷": rezultat = a; pitanje = `(${a*b}) ÷ ${b}`; break;
       }
     }
 
@@ -117,16 +52,15 @@ function generisiPitanja(nivo) {
   }
 }
 
-// ------------------ Tajmer ------------------
+// ------------------ TAJMER ------------------
 function startTimer() {
   const timer = document.getElementById("timer");
   clearInterval(timerInterval);
   vrijeme = 15 * 60;
 
   timerInterval = setInterval(() => {
-    let min = Math.floor(vrijeme / 60);
-    let sec = vrijeme % 60;
-    sec = sec < 10 ? "0" + sec : sec;
+    const min = Math.floor(vrijeme / 60);
+    const sec = (vrijeme % 60).toString().padStart(2, "0");
     timer.textContent = `⏳ ${min}:${sec}`;
     if (--vrijeme <= 0) {
       clearInterval(timerInterval);
@@ -135,7 +69,7 @@ function startTimer() {
   }, 1000);
 }
 
-// ------------------ Završetak ------------------
+// ------------------ ZAVRŠETAK ------------------
 function zavrsiKviz() {
   clearInterval(timerInterval);
   document.getElementById("kviz").classList.add("hidden");
@@ -144,65 +78,49 @@ function zavrsiKviz() {
   let bodovi = 0;
   odgovoriKorisnika = [];
 
-  for (let i = 1; i <= 50; i++) {
+  for (let i = 1; i <= tacniOdgovori.length; i++) {
     const checked = document.querySelector(`input[name="q${i}"]:checked`);
     const odgovor = checked ? parseFloat(checked.value) : null;
     odgovoriKorisnika.push(odgovor);
     if (odgovor === tacniOdgovori[i - 1]) bodovi++;
   }
 
-  const postotak = (bodovi / 50) * 100;
-  const ocjena =
-    postotak >= 90 ? 5 :
-    postotak >= 75 ? 4 :
-    postotak >= 60 ? 3 :
-    postotak >= 45 ? 2 : 1;
+  const postotak = (bodovi / tacniOdgovori.length) * 100;
+  const ocjena = postotak >= 90 ? 5 : postotak >= 75 ? 4 : postotak >= 60 ? 3 : postotak >= 45 ? 2 : 1;
 
   document.getElementById("rezime").innerHTML =
     `Ekipa: <b>${ime1}</b> i <b>${ime2}</b> (${razred})<br>` +
-    `Bodovi: <b>${bodovi}/50</b> (${postotak.toFixed(1)}%)`;
+    `Bodovi: <b>${bodovi}/${tacniOdgovori.length}</b> (${postotak.toFixed(1)}%)`;
   document.getElementById("ocjena").innerHTML = `Ocjena: <b>${ocjena}</b>`;
 
   prikaziTacneOdgovore();
 
-  localStorage.setItem("rezultat_" + Date.now(), JSON.stringify({
-    ime1, ime2, razred, bodovi, postotak, ocjena
-  }));
+  localStorage.setItem("rezultat_" + Date.now(), JSON.stringify({ ime1, ime2, razred, bodovi, postotak, ocjena }));
 }
 
-// ------------------ Prikaz tačnih odgovora ------------------
+// ------------------ PRIKAZ TAČNIH ODGOVORA ------------------
 function prikaziTacneOdgovore() {
   const lista = document.getElementById("tacni");
   lista.innerHTML = "";
-  for (let i = 0; i < tacniOdgovori.length; i++) {
+  tacniOdgovori.forEach((tacan, i) => {
     const korisnicki = odgovoriKorisnika[i];
-    const tacan = tacniOdgovori[i];
-    const stil = korisnicki === tacan ? "color:green" : "color:red";
-    lista.innerHTML += `<p>${i+1}. Tačno: <b>${tacan}</b> — Tvoj: <span style="${stil}">${korisnicki ?? "bez odgovora"}</span></p>`;
-  }
+    const boja = korisnicki === tacan ? "green" : "red";
+    lista.innerHTML += `<p>${i+1}. Tačno: <b>${tacan}</b> — Tvoj: <span style="color:${boja}">${korisnicki ?? "bez odgovora"}</span></p>`;
+  });
 }
 
-// ------------------ Diploma ------------------
+// ------------------ DIPLOMA ------------------
 function generisiDiplomu() {
   const jsPDFLib = window.jspdf || window.jsPDF;
   const doc = new jsPDFLib.jsPDF({ orientation: "landscape", unit: "mm", format: "a4" });
 
   const keys = Object.keys(localStorage).filter(k => k.startsWith("rezultat_"));
   if (keys.length === 0) {
-    alert("Nema pohranjenih rezultata!");
+    alert("Nema rezultata!");
     return;
   }
 
   const data = JSON.parse(localStorage.getItem(keys.sort().pop()));
-
-  let boja = "#FFD700";
-  if (data.ocjena === 4) boja = "#C0C0C0";
-  else if (data.ocjena === 3) boja = "#CD7F32";
-  else if (data.ocjena <= 2) boja = "#E0E0E0";
-
-  doc.setDrawColor(boja);
-  doc.setLineWidth(3);
-  doc.rect(10, 10, 277, 190);
 
   doc.setFont("helvetica", "bold");
   doc.setFontSize(36);
@@ -214,7 +132,7 @@ function generisiDiplomu() {
   doc.text("dodjeljuje priznanje ekipi:", 148.5, 75, { align: "center" });
 
   doc.setFontSize(22);
-  doc.text(`${data.ime1}${data.ime2 ? " i " + data.ime2 : ""}`, 148.5, 95, { align: "center" });
+  doc.text(`${data.ime1} i ${data.ime2}`, 148.5, 95, { align: "center" });
 
   doc.setFontSize(15);
   doc.text(`Razredi: ${data.razred}`, 148.5, 110, { align: "center" });
@@ -230,22 +148,11 @@ function generisiDiplomu() {
   doc.save(`Diploma_${data.ime1}_${data.ime2}.pdf`);
 }
 
-// ------------------ Brisanje rezultata ------------------
-document.addEventListener("keydown", (e) => {
-  if (e.altKey && e.key.toLowerCase() === "x") {
-    if (confirm("Da li sigurno želiš obrisati sve rezultate?")) {
-      localStorage.clear();
-      alert("Svi rezultati su obrisani!");
-      location.reload();
-    }
-  }
-});
-
-// ------------------ Alati ------------------
+// ------------------ ALATI ------------------
 function shuffle(arr) { return arr.sort(() => Math.random() - 0.5); }
 function rand(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
 
-// ------------------ Start kviza ------------------
+// ------------------ START ------------------
 document.addEventListener("DOMContentLoaded", () => {
   const startBtn = document.getElementById("startBtn");
   if (!startBtn) return;
@@ -274,4 +181,3 @@ document.addEventListener("DOMContentLoaded", () => {
     initKviz(nivo);
   });
 });
-
